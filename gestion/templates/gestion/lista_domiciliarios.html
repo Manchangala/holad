@@ -1,0 +1,15 @@
+{% extends "gestion/base.html" %}
+{% block title %}Lista de Domiciliarios{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Lista de Domiciliarios</h1>
+    <ul class="list-group">
+        {% for domiciliario in domiciliarios %}
+        <li class="list-group-item">
+            <strong>{{ domiciliario.nombre }} {{ domiciliario.apellido }}</strong> - {{ domiciliario.medio_transporte }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'crear_domiciliario' %}" class="btn btn-primary mt-3">Crear Nuevo Domiciliario</a>
+</div>
+{% endblock %}

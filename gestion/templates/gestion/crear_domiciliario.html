@@ -1,0 +1,36 @@
+{% extends "gestion/base.html" %}
+{% block title %}Crear Domiciliario{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Crear Domiciliario</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre">
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido:</label>
+            <input type="text" class="form-control" id="apellido" name="apellido">
+        </div>
+        <div class="mb-3">
+            <label for="horario_disponibilidad" class="form-label">Horario de Disponibilidad:</label>
+            <input type="text" class="form-control" id="horario_disponibilidad" name="horario_disponibilidad">
+        </div>
+        <div class="mb-3">
+            <label for="medio_transporte" class="form-label">Medio de Transporte:</label>
+            <input type="text" class="form-control" id="medio_transporte" name="medio_transporte">
+        </div>
+        <div class="mb-3">
+            <label for="licencia_conduccion" class="form-label">Licencia de Conducción:</label>
+            <input type="text" class="form-control" id="licencia_conduccion" name="licencia_conduccion">
+        </div>
+        <div class="mb-3">
+            <label for="fecha_vencimiento_licencia" class="form-label">Fecha de Vencimiento de la Licencia:</label>
+            <input type="date" class="form-control" id="fecha_vencimiento_licencia" name="fecha_vencimiento_licencia">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+    <a href="{% url 'lista_domiciliarios' %}" class="btn btn-secondary mt-3">Volver a la lista</a>
+</div>
+{% endblock %}

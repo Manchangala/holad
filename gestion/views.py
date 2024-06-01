@@ -3,8 +3,42 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Cliente, Pedido, DetallePedido, Domiciliario, Entrega
 
 
-from .models import Cliente
 
+def lista_domiciliarios(request):
+    domiciliarios = Domiciliario.objects.all()
+    return render(request, 'gestion/lista_domiciliarios.html', {'domiciliarios': domiciliarios})
+
+def crear_domiciliario(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        horario_disponibilidad = request.POST['horario_disponibilidad']
+        medio_transporte = request.POST['medio_transporte']
+        licencia_conduccion = request.POST.get('licencia_conduccion', None)
+        fecha_vencimiento_licencia = request.POST.get('fecha_vencimiento_licencia', None)
+        Domiciliario.objects.create(
+            nombre=nombre, apellido=apellido, horario_disponibilidad=horario_disponibilidad,
+            medio_transporte=medio_transporte, licencia_conduccion=licencia_conduccion,
+            fecha_vencimiento_licencia=fecha_vencimiento_licencia
+        )
+        return redirect('lista_domiciliarios')
+    return render(request, 'gestion/crear_domiciliario.html')
+
+
+def lista_pedidos(request):
+    pedidos = Pedido.objects.all()
+    return render(request, 'gestion/lista_pedidos.html', {'pedidos': pedidos})
+
+def crear_pedido(request):
+    if request.method == 'POST':
+        cliente_id = request.POST['cliente_id']
+        direccion_entrega = request.POST['direccion_entrega']
+        recogida_en_tienda = request.POST.get('recogida_en_tienda', False)
+        cliente = Cliente.objects.get(id=cliente_id)
+        Pedido.objects.create(cliente=cliente, direccion_entrega=direccion_entrega, recogida_en_tienda=recogida_en_tienda)
+        return redirect('lista_pedidos')
+    clientes = Cliente.objects.all()
+    return render(request, 'gestion/crear_pedido.html', {'clientes': clientes})
 
 def lista_clientes(request):
     clientes = Cliente.objects.all()
@@ -20,7 +54,6 @@ def crear_cliente(request):
         Cliente.objects.create(nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono)
         return redirect('lista_clientes')
     return render(request, 'gestion/crear_cliente.html')
-
 
 # Vistas para Producto
 def lista_productos(request):

@@ -1,0 +1,18 @@
+{% extends "gestion/base.html" %}
+{% block title %}Lista de Pedidos{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Lista de Pedidos</h1>
+    <ul class="list-group">
+        {% for pedido in pedidos %}
+        <li class="list-group-item">
+            <strong>Pedido ID: {{ pedido.id }}</strong> - Cliente: {{ pedido.cliente.nombre }} - Dirección: {{ pedido.direccion_entrega }}
+            {% if pedido.recogida_en_tienda %}
+            (Recoger en Tienda)
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'crear_pedido' %}" class="btn btn-primary mt-3">Crear Nuevo Pedido</a>
+</div>
+{% endblock %}
