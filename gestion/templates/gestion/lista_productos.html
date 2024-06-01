@@ -1,0 +1,16 @@
+<!-- gestion/templates/gestion/lista_productos.html -->
+{% extends "gestion/base.html" %}
+{% block title %}Lista de Productos{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Lista de Productos</h1>
+    <ul class="list-group">
+        {% for producto in productos %}
+        <li class="list-group-item">
+            <strong>{{ producto.nombre }}</strong> - {{ producto.precio }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'crear_producto' %}" class="btn btn-primary mt-3">Crear Nuevo Producto</a>
+</div>
+{% endblock %}
