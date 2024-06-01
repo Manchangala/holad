@@ -1,0 +1,15 @@
+{% extends "gestion/base.html" %}
+{% block title %}Lista de Clientes{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Lista de Clientes</h1>
+    <ul class="list-group">
+        {% for cliente in clientes %}
+        <li class="list-group-item">
+            <strong>{{ cliente.nombre }} {{ cliente.apellido }}</strong> - {{ cliente.telefono }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'crear_cliente' %}" class="btn btn-primary mt-3">Crear Nuevo Cliente</a>
+</div>
+{% endblock %}

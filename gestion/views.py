@@ -2,6 +2,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Cliente, Pedido, DetallePedido, Domiciliario, Entrega
 
+
+from .models import Cliente
+
+
+def lista_clientes(request):
+    clientes = Cliente.objects.all()
+    return render(request, 'gestion/lista_clientes.html', {'clientes': clientes})
+
+
+def crear_cliente(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        direccion = request.POST['direccion']
+        telefono = request.POST['telefono']
+        Cliente.objects.create(nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono)
+        return redirect('lista_clientes')
+    return render(request, 'gestion/crear_cliente.html')
+
+
 # Vistas para Producto
 def lista_productos(request):
     productos = Producto.objects.all()
