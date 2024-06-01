@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Cliente, Pedido, DetallePedido, Domiciliario, Entrega
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from .forms import ProductoForm, DomiciliarioForm, ClienteForm, PedidoForm
+
+
 
 
 
@@ -12,25 +15,13 @@ def lista_domiciliarios(request):
 
 def crear_domiciliario(request):
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        apellido = request.POST['apellido']
-        medio_transporte = request.POST['medio_transporte']
-        licencia_conduccion = request.POST['licencia_conduccion']
-        fecha_vencimiento_licencia = request.POST['fecha_vencimiento_licencia']
-        disponibilidad_inicio = request.POST['disponibilidad_inicio']
-        disponibilidad_fin = request.POST['disponibilidad_fin']
-        Domiciliario.objects.create(
-            nombre=nombre, 
-            apellido=apellido, 
-            medio_transporte=medio_transporte, 
-            licencia_conduccion=licencia_conduccion,
-            fecha_vencimiento_licencia=fecha_vencimiento_licencia,
-            disponibilidad_inicio=disponibilidad_inicio,
-            disponibilidad_fin=disponibilidad_fin
-        )
-        return redirect('lista_domiciliarios')
-    return render(request, 'gestion/crear_domiciliario.html')
-
+        form = DomiciliarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_domiciliarios')
+    else:
+        form = DomiciliarioForm()
+    return render(request, 'gestion/crear_domiciliario.html', {'form': form})
 def lista_pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'gestion/lista_pedidos.html', {'pedidos': pedidos})
@@ -38,28 +29,19 @@ def lista_pedidos(request):
 
 def crear_pedido(request):
     if request.method == 'POST':
-        cliente_id = request.POST['cliente_id']
-        direccion_entrega = request.POST['direccion_entrega']
-        recogida_en_tienda = request.POST.get('recogida_en_tienda', False) == 'on'
-        cliente = Cliente.objects.get(id=cliente_id)
-        pedido = Pedido.objects.create(
-            cliente=cliente,
-            direccion_entrega=direccion_entrega,
-            recogida_en_tienda=recogida_en_tienda
-        )
-
-        # Asignar domiciliario
-        domiciliario = Domiciliario.objects.filter(fecha_vencimiento_licencia__gt=timezone.now()).first()
-        if domiciliario:
-            pedido.domiciliario = domiciliario
-            pedido.fecha_envio = timezone.now()
-            pedido.save()
-        
-        return redirect('lista_pedidos')
-    
-    clientes = Cliente.objects.all()
-    productos = Producto.objects.all()
-    return render(request, 'gestion/crear_pedido.html', {'clientes': clientes, 'productos': productos})
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            pedido = form.save(commit=False)
+            # Asignar domiciliario
+            domiciliario = Domiciliario.objects.filter(fecha_vencimiento_licencia__gt=timezone.now()).first()
+            if domiciliario:
+                pedido.domiciliario = domiciliario
+                pedido.fecha_envio = timezone.now()
+                pedido.save()
+                return redirect('lista_pedidos')
+    else:
+        form = PedidoForm()
+    return render(request, 'gestion/crear_pedido.html', {'form': form})
 
 def lista_clientes(request):
     clientes = Cliente.objects.all()
@@ -68,13 +50,13 @@ def lista_clientes(request):
 
 def crear_cliente(request):
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        apellido = request.POST['apellido']
-        direccion = request.POST['direccion']
-        telefono = request.POST['telefono']
-        Cliente.objects.create(nombre=nombre, apellido=apellido, direccion=direccion, telefono=telefono)
-        return redirect('lista_clientes')
-    return render(request, 'gestion/crear_cliente.html')
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_clientes')
+    else:
+        form = ClienteForm()
+    return render(request, 'gestion/crear_cliente.html', {'form': form})
 
 # Vistas para Producto
 def lista_productos(request):
@@ -87,14 +69,13 @@ def detalle_producto(request, producto_id):
 
 def crear_producto(request):
     if request.method == 'POST':
-        nombre = request.POST['nombre']
-        descripcion = request.POST['descripcion']
-        precio = request.POST['precio']
-        categoria = request.POST['categoria']
-        producto = Producto(nombre=nombre, descripcion=descripcion, precio=precio, categoria=categoria)
-        producto.save()
-        return redirect('lista_productos')
-    return render(request, 'gestion/crear_producto.html')
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_productos')
+    else:
+        form = ProductoForm()
+    return render(request, 'gestion/crear_producto.html', {'form': form})
 
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)

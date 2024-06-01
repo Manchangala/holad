@@ -1,29 +1,11 @@
-{% extends "gestion/base.html" %}
-{% block title %}Crear Pedido{% endblock %}
+{% extends 'gestion/base.html' %}
+
 {% block content %}
-<div class="container">
-    <h1 class="my-4">Crear Pedido</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="cliente_id" class="form-label">Cliente:</label>
-            <select class="form-control" id="cliente_id" name="cliente_id">
-                {% for cliente in clientes %}
-                <option value="{{ cliente.id }}">{{ cliente.nombre }} {{ cliente.apellido }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="direccion_entrega" class="form-label">Dirección de Entrega:</label>
-            <input type="text" class="form-control" id="direccion_entrega" name="direccion_entrega">
-        </div>
-        <div class="mb-3">
-            <label for="recogida_en_tienda" class="form-check-label">
-                <input type="checkbox" class="form-check-input" id="recogida_en_tienda" name="recogida_en_tienda"> Recoger en Tienda
-            </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
-    <a href="{% url 'lista_pedidos' %}" class="btn btn-secondary mt-3">Volver a la lista</a>
-</div>
+  <h2>Crear Pedido</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear</button>
+  </form>
+  <a href="{% url 'lista_pedidos' %}">Volver a la lista</a>
 {% endblock %}
