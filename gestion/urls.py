@@ -1,6 +1,7 @@
 # gestion/urls.py
 from django.urls import path
 from . import views
+from django.urls import path, include
 
 urlpatterns = [
     path('productos/', views.lista_productos, name='lista_productos'),
@@ -16,4 +17,8 @@ urlpatterns = [
     path('domiciliario/crear/', views.crear_domiciliario, name='crear_domiciliario'),
     path('pedidos/', views.lista_pedidos, name='lista_pedidos'),
     path('pedido/crear/', views.crear_pedido, name='crear_pedido'),
+    path('gestion/', include('gestion.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+   
+
 ]

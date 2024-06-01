@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Cliente, Pedido, DetallePedido, Domiciliario, Entrega
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 
