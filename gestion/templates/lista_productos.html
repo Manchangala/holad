@@ -1,0 +1,16 @@
+<!-- gestion/templates/gestion/lista_productos.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Productos</title>
+</head>
+<body>
+    <h1>Lista de Productos</h1>
+    <ul>
+        {% for producto in productos %}
+        <li>{{ producto.nombre }} - {{ producto.precio }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'crear_producto' %}">Crear Nuevo Producto</a>
+</body>
+</html>
