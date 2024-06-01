@@ -6,7 +6,7 @@
     <ul class="list-group">
         {% for cliente in clientes %}
         <li class="list-group-item">
-            <strong>{{ cliente.nombre }} {{ cliente.apellido }}</strong> - {{ cliente.telefono }}
+            {{ cliente.nombre }} {{ cliente.apellido }} - {{ cliente.direccion }} - {{ cliente.telefono }}
         </li>
         {% endfor %}
     </ul>

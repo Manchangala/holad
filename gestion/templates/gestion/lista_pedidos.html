@@ -6,13 +6,14 @@
     <ul class="list-group">
         {% for pedido in pedidos %}
         <li class="list-group-item">
-            <strong>Pedido ID: {{ pedido.id }}</strong> - Cliente: {{ pedido.cliente.nombre }} - Dirección: {{ pedido.direccion_entrega }}
-            {% if pedido.recogida_en_tienda %}
-            (Recoger en Tienda)
+            Pedido {{ pedido.id }} - Cliente: {{ pedido.cliente.nombre }} {{ pedido.cliente.apellido }}
+            {% if pedido.domiciliario %}
+            - Domiciliario: {{ pedido.domiciliario.nombre }} {{ pedido.domiciliario.apellido }}
             {% endif %}
+            - Fecha Pedido: {{ pedido.fecha_pedido }}
         </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'crear_pedido' %}" class="btn btn-primary mt-3">Crear Nuevo Pedido</a>
 </div>
 {% endblock %}
+

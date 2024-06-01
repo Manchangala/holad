@@ -14,20 +14,28 @@
             <input type="text" class="form-control" id="apellido" name="apellido">
         </div>
         <div class="mb-3">
-            <label for="horario_disponibilidad" class="form-label">Horario de Disponibilidad:</label>
-            <input type="text" class="form-control" id="horario_disponibilidad" name="horario_disponibilidad">
-        </div>
-        <div class="mb-3">
             <label for="medio_transporte" class="form-label">Medio de Transporte:</label>
-            <input type="text" class="form-control" id="medio_transporte" name="medio_transporte">
+            <select class="form-control" id="medio_transporte" name="medio_transporte">
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+                <option value="bicicleta">Bicicleta</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="licencia_conduccion" class="form-label">Licencia de Conducción:</label>
             <input type="text" class="form-control" id="licencia_conduccion" name="licencia_conduccion">
         </div>
         <div class="mb-3">
-            <label for="fecha_vencimiento_licencia" class="form-label">Fecha de Vencimiento de la Licencia:</label>
+            <label for="fecha_vencimiento_licencia" class="form-label">Fecha de Vencimiento de Licencia:</label>
             <input type="date" class="form-control" id="fecha_vencimiento_licencia" name="fecha_vencimiento_licencia">
+        </div>
+        <div class="mb-3">
+            <label for="disponibilidad_inicio" class="form-label">Disponibilidad Inicio:</label>
+            <input type="time" class="form-control" id="disponibilidad_inicio" name="disponibilidad_inicio">
+        </div>
+        <div class="mb-3">
+            <label for="disponibilidad_fin" class="form-label">Disponibilidad Fin:</label>
+            <input type="time" class="form-control" id="disponibilidad_fin" name="disponibilidad_fin">
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
     </form>

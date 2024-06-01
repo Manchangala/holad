@@ -6,7 +6,7 @@
     <ul class="list-group">
         {% for domiciliario in domiciliarios %}
         <li class="list-group-item">
-            <strong>{{ domiciliario.nombre }} {{ domiciliario.apellido }}</strong> - {{ domiciliario.medio_transporte }}
+            {{ domiciliario.nombre }} {{ domiciliario.apellido }} - {{ domiciliario.medio_transporte }} - {{ domiciliario.licencia_conduccion }} - {{ domiciliario.disponibilidad_inicio }} - {{ domiciliario.disponibilidad_fin }}
         </li>
         {% endfor %}
     </ul>

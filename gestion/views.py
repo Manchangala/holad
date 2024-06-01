@@ -1,6 +1,7 @@
 # gestion/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Cliente, Pedido, DetallePedido, Domiciliario, Entrega
+from django.utils import timezone
 
 
 
@@ -12,33 +13,52 @@ def crear_domiciliario(request):
     if request.method == 'POST':
         nombre = request.POST['nombre']
         apellido = request.POST['apellido']
-        horario_disponibilidad = request.POST['horario_disponibilidad']
         medio_transporte = request.POST['medio_transporte']
-        licencia_conduccion = request.POST.get('licencia_conduccion', None)
-        fecha_vencimiento_licencia = request.POST.get('fecha_vencimiento_licencia', None)
+        licencia_conduccion = request.POST['licencia_conduccion']
+        fecha_vencimiento_licencia = request.POST['fecha_vencimiento_licencia']
+        disponibilidad_inicio = request.POST['disponibilidad_inicio']
+        disponibilidad_fin = request.POST['disponibilidad_fin']
         Domiciliario.objects.create(
-            nombre=nombre, apellido=apellido, horario_disponibilidad=horario_disponibilidad,
-            medio_transporte=medio_transporte, licencia_conduccion=licencia_conduccion,
-            fecha_vencimiento_licencia=fecha_vencimiento_licencia
+            nombre=nombre, 
+            apellido=apellido, 
+            medio_transporte=medio_transporte, 
+            licencia_conduccion=licencia_conduccion,
+            fecha_vencimiento_licencia=fecha_vencimiento_licencia,
+            disponibilidad_inicio=disponibilidad_inicio,
+            disponibilidad_fin=disponibilidad_fin
         )
         return redirect('lista_domiciliarios')
     return render(request, 'gestion/crear_domiciliario.html')
-
 
 def lista_pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'gestion/lista_pedidos.html', {'pedidos': pedidos})
 
+
 def crear_pedido(request):
     if request.method == 'POST':
         cliente_id = request.POST['cliente_id']
         direccion_entrega = request.POST['direccion_entrega']
-        recogida_en_tienda = request.POST.get('recogida_en_tienda', False)
+        recogida_en_tienda = request.POST.get('recogida_en_tienda', False) == 'on'
         cliente = Cliente.objects.get(id=cliente_id)
-        Pedido.objects.create(cliente=cliente, direccion_entrega=direccion_entrega, recogida_en_tienda=recogida_en_tienda)
+        pedido = Pedido.objects.create(
+            cliente=cliente,
+            direccion_entrega=direccion_entrega,
+            recogida_en_tienda=recogida_en_tienda
+        )
+
+        # Asignar domiciliario
+        domiciliario = Domiciliario.objects.filter(fecha_vencimiento_licencia__gt=timezone.now()).first()
+        if domiciliario:
+            pedido.domiciliario = domiciliario
+            pedido.fecha_envio = timezone.now()
+            pedido.save()
+        
         return redirect('lista_pedidos')
+    
     clientes = Cliente.objects.all()
-    return render(request, 'gestion/crear_pedido.html', {'clientes': clientes})
+    productos = Producto.objects.all()
+    return render(request, 'gestion/crear_pedido.html', {'clientes': clientes, 'productos': productos})
 
 def lista_clientes(request):
     clientes = Cliente.objects.all()
